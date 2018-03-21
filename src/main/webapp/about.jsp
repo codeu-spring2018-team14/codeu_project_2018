@@ -59,16 +59,16 @@
 
       <p>
         This chat web app is a product of the joint effort of 4 college 
-	students: Ed Ellis, Emily Padgett, Cece Xiao, and Alonda Robichaud.
-	Ed is a sophomore at Columbia University interested in jazz 
-	and anime. 
-	Emily is a sophomore at Penn State who loves traveling and 
-	trying new foods. She also loves dogs, especially her own dog.
-	Cece is a sophomore at Brown University who loves to dance,
-	binge watch TV shows. She is a major foodie and likes to look
-	at memes.
-	Alonda is a sophomore at Smith College. She loves to travel, cook,
-	and weave.
+	 students: Ed Ellis, Emily Padgett, Cece Xiao, and Alonda Robichaud.
+	 Ed is a sophomore at Columbia University interested in jazz 
+	 and anime. 
+	 Emily is a sophomore at Penn State who loves traveling and 
+	 trying new foods. She also loves dogs, especially her own dog.
+	 Cece is a sophomore at Brown University who loves to dance,
+	 binge watch TV shows. She is a major foodie and likes to look
+	 at memes.
+	 Alonda is a sophomore at Smith College. She loves to travel, cook,
+	 and weave.
       </p>
     </div>
   </div>
