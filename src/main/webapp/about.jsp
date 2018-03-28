@@ -28,6 +28,7 @@
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
     <% } else{ %>
       <a href="/login">Login</a>
+      <a href="/register">Register</a>
     <% } %>
     <a href="/about.jsp">About</a>
   </nav>
@@ -58,11 +59,17 @@
       </ul>
 
       <p>
-        This is your code now. Get familiar with it and get comfortable
-        working with your team to plan and make changes. Start by updating the
-        homepage and this about page to tell your users more about your team.
-        This page should also be used to describe the features and improvements
-        you've added.
+        This chat web app is a product of the joint effort of 4 college 
+	 students: Ed Ellis, Emily Padgett, Cece Xiao, and Alonda Robichaud.
+	 Ed is a sophomore at Columbia University interested in jazz 
+	 and anime. 
+	 Emily is a sophomore at Penn State who loves traveling and 
+	 trying new foods. She also loves dogs, especially her own dog.
+	 Cece is a sophomore at Brown University who loves to dance,
+	 binge watch TV shows. She is a major foodie and likes to look
+	 at memes.
+	 Alonda is a sophomore at Smith College. She loves to travel, cook,
+	 and weave.
       </p>
     </div>
   </div>
