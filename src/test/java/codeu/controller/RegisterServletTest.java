@@ -57,10 +57,7 @@ public class RegisterServletTest{
     UserStore mockUserStore = Mockito.mock(UserStore.class);
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(false);
     registerServlet.setUserStore(mockUserStore);
-
-    HttpSession mockSession = Mockito.mock(HttpSession.class);
-    Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
-
+    
     registerServlet.doPost(mockRequest, mockResponse);
 
     ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
@@ -68,7 +65,6 @@ public class RegisterServletTest{
     Mockito.verify(mockUserStore).addUser(userArgumentCaptor.capture());
     Assert.assertEquals(userArgumentCaptor.getValue().getName(), "test username");
 
-    Mockito.verify(mockSession).setAttribute("user", "test username");
     Mockito.verify(mockResponse).sendRedirect("/conversations");
   }
 
