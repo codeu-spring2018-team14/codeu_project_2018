@@ -67,7 +67,7 @@ public class RegisterServletTest{
     Assert.assertEquals(userArgumentCaptor.getValue().getName(), "test username");
     Assert.assertEquals(userArgumentCaptor.getValue().getPassword(), "test password");
 
-    Mockito.verify(mockResponse).sendRedirect("/conversations");
+    Mockito.verify(mockResponse).sendRedirect("/login");
   }
 
   @Test
@@ -78,14 +78,10 @@ public class RegisterServletTest{
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
     registerServlet.setUserStore(mockUserStore);
 
-    HttpSession mockSession = Mockito.mock(HttpSession.class);
-    Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
-
     registerServlet.doPost(mockRequest, mockResponse);
 
     Mockito.verify(mockUserStore, Mockito.never()).addUser(Mockito.any(User.class));
 
-    Mockito.verify(mockSession).setAttribute("user", "test username");
     Mockito.verify(mockResponse).sendRedirect("/conversations");
   }
 }
