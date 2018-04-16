@@ -16,6 +16,8 @@ package codeu.controller;
 
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.io.IOException;
 import java.time.Instant;
 import java.util.UUID;
@@ -72,7 +74,7 @@ public class LoginServlet extends HttpServlet {
 
     if (userStore.isUserRegistered(username)) {
       User user = userStore.getUser(username);
-      if(password.equals(user.getPassword())){
+      if(BCrypt.checkpw(password, user.getPassword())) {
         request.getSession().setAttribute("user",username);
         response.sendRedirect("/conversations");
       }
