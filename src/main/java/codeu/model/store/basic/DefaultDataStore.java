@@ -18,13 +18,13 @@ import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentStorageAgent;
-import org.mindrot.jbcrypt.BCrypt;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  * This class makes it easy to add dummy data to your chat app instance. To use fake data, set
