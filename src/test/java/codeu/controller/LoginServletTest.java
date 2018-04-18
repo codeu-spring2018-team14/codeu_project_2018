@@ -27,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
@@ -74,10 +75,12 @@ public class LoginServletTest {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
     Mockito.when(mockRequest.getParameter("password")).thenReturn("test password");
 
+    String hashPassword = BCrypt.hashpw("test password", BCrypt.gensalt());
+
     UserStore mockUserStore = Mockito.mock(UserStore.class);
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
     Mockito.when(mockUserStore.getUser("test username")).thenReturn(new User(UUID.randomUUID(),
-            "test username", "test password", Instant.now()));
+            "test username", hashPassword, Instant.now()));
     loginServlet.setUserStore(mockUserStore);
 
     HttpSession mockSession = Mockito.mock(HttpSession.class);
@@ -85,10 +88,9 @@ public class LoginServletTest {
 
     loginServlet.doPost(mockRequest, mockResponse);
 
-
     Mockito.verify(mockUserStore).getUser("test username");
 
-    Assert.assertEquals(mockUserStore.getUser("test username").getPassword(), "test password");
+    Assert.assertEquals(mockUserStore.getUser("test username").getPassword(), hashPassword);
 
     Mockito.verify(mockSession).setAttribute("user", "test username");
     Mockito.verify(mockResponse).sendRedirect("/conversations");
@@ -99,10 +101,12 @@ public class LoginServletTest {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
     Mockito.when(mockRequest.getParameter("password")).thenReturn("test password");
 
+    String hashPassword = BCrypt.hashpw("test not_password", BCrypt.gensalt());
+
     UserStore mockUserStore = Mockito.mock(UserStore.class);
     Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
     Mockito.when(mockUserStore.getUser("test username")).thenReturn(new User(UUID.randomUUID(),
-            "test username", "test not_password", Instant.now()));
+            "test username", hashPassword, Instant.now()));
     loginServlet.setUserStore(mockUserStore);
 
     HttpSession mockSession = Mockito.mock(HttpSession.class);
@@ -113,9 +117,11 @@ public class LoginServletTest {
 
     Mockito.verify(mockUserStore).getUser("test username");
 
+    String notHashPassword = BCrypt.hashpw("test password", BCrypt.gensalt());
+
 
     //Assert that password DOESN'T equal user.getpassword()
-    Assert.assertNotEquals(mockUserStore.getUser("test username").getPassword(), "test password");
+    Assert.assertNotEquals(mockUserStore.getUser("test username").getPassword(), notHashPassword);
 
     Mockito.verify(mockRequest).setAttribute("error", "Invalid password.");
 
