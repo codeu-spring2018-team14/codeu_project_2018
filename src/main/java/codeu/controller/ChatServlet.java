@@ -143,10 +143,15 @@ public class ChatServlet extends HttpServlet {
 
     // this removes any HTML from the message content
     String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
+    String parsedMessageContent = cleanedMessageContent;
 
-    // use MarkdownProcessor to parse any markdown
-    MarkdownProcessor mark_it = new MarkdownProcessor();
-    String parsedMessageContent = mark_it.markdown(cleanedMessageContent);
+    /* use MarkdownProcessor to parse any markdown if the message
+     * contains markdown
+     */
+    if (cleanedMessageContent.contains("**")) {
+        MarkdownProcessor mark_it = new MarkdownProcessor();
+        parsedMessageContent = mark_it.markdown(cleanedMessageContent);
+    }
 
 
     Message message =
