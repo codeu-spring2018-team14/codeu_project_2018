@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import org.markdownj.MarkdownProcessor;
 
 /** Servlet class responsible for the chat page. */
 public class ChatServlet extends HttpServlet {
@@ -143,12 +144,17 @@ public class ChatServlet extends HttpServlet {
     // this removes any HTML from the message content
     String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
 
+    // use MarkdownProcessor to parse any markdown
+    MarkdownProcessor mark_it = new MarkdownProcessor();
+    String parsedMessageContent = mark_it.markdown(cleanedMessageContent);
+
+
     Message message =
         new Message(
             UUID.randomUUID(),
             conversation.getId(),
             user.getId(),
-            cleanedMessageContent,
+            parsedMessageContent,
             Instant.now());
 
     messageStore.addMessage(message);
