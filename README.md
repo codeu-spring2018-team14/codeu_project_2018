@@ -1,4 +1,4 @@
-# CodeU Example Project
+# CodeU Spring 2018 Team 14
 
 This is an example chat application. It's complete and functional, but leaves
 plenty of room for improvement.

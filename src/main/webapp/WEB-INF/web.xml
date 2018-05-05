@@ -78,12 +78,12 @@
 
   <servlet>
     <servlet-name>ProfileServlet</servlet-name>
-    <servlet-class>codeu.controller.RegisterServlet</servlet-clas>
+    <servlet-class>codeu.controller.ProfileServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servelet-name>ProfileServlet</servlet-name>
-    <url-patter>/profile</url-pattern>
+    <servlet-name>ProfileServlet</servlet-name>
+    <url-pattern>/profile</url-pattern>
   </servlet-mapping>
 
 
