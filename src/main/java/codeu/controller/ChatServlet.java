@@ -143,25 +143,21 @@ public class ChatServlet extends HttpServlet {
 
     // this removes any HTML from the message content
     String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
-    String parsedMessageContent = cleanedMessageContent;
 
     /* use MarkdownProcessor to parse any markdown if the message
      * contains markdown
      */
-    if (cleanedMessageContent.contains("**")) {
-        MarkdownProcessor mark_it = new MarkdownProcessor();
-        parsedMessageContent = mark_it.markdown(cleanedMessageContent);
-        // Remove <p> and </p> that markdown processor adds to string
-        int i = parsedMessageContent.length();
-        /* deleted 5th character from the end b/c markdown processor
-         * apparently adds an extra <
-         */
-        parsedMessageContent = new
-              StringBuilder(parsedMessageContent).delete(i-5, i).toString();
-        parsedMessageContent = new
-                StringBuilder(parsedMessageContent).delete(0,3).toString();
-    }
-
+    MarkdownProcessor mark_it = new MarkdownProcessor();
+    String parsedMessageContent = mark_it.markdown(cleanedMessageContent);
+    // Remove <p> and </p> that markdown processor adds to string
+    int i = parsedMessageContent.length();
+    /* deleted 5th character from the end b/c markdown processor
+     * apparently adds an extra <
+     */
+    parsedMessageContent = new
+            StringBuilder(parsedMessageContent).delete(i-5, i).toString();
+    parsedMessageContent = new
+            StringBuilder(parsedMessageContent).delete(0,3).toString();
     Message message =
         new Message(
             UUID.randomUUID(),
