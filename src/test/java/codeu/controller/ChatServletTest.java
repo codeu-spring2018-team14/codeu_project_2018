@@ -211,14 +211,14 @@ public class ChatServletTest {
             .thenReturn(fakeConversation);
 
     Mockito.when(mockRequest.getParameter("message"))
-            .thenReturn("Contains **important** markdown content _italic_");
+            .thenReturn("**important** markdown `monospace` _italic_");
 
     chatServlet.doPost(mockRequest, mockResponse);
 
     ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
     Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
     Assert.assertEquals(
-            "Contains <strong>important</strong> markdown content <em>italic</em>",
+            "<strong>important</strong> markdown <code>monospace</code> <em>italic</em>",
             messageArgumentCaptor.getValue().getContent());
 
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
