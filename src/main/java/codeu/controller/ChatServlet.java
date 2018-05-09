@@ -152,11 +152,14 @@ public class ChatServlet extends HttpServlet {
         MarkdownProcessor mark_it = new MarkdownProcessor();
         parsedMessageContent = mark_it.markdown(cleanedMessageContent);
         // Remove <p> and </p> that markdown processor adds to string
+        int i = parsedMessageContent.length();
+        /* deleted 5th character from the end b/c markdown processor
+         * apparently adds an extra <
+         */
         parsedMessageContent = new
-                StringBuilder(parsedMessageContent).delete(0,2).toString();
-        int i = parsedMessageContent.length() - 1;
+              StringBuilder(parsedMessageContent).delete(i-5, i).toString();
         parsedMessageContent = new
-                StringBuilder(parsedMessageContent).delete(i-3, i).toString();
+                StringBuilder(parsedMessageContent).delete(0,3).toString();
     }
 
     Message message =
@@ -173,3 +176,4 @@ public class ChatServlet extends HttpServlet {
     response.sendRedirect("/chat/" + conversationTitle);
   }
 }
+
