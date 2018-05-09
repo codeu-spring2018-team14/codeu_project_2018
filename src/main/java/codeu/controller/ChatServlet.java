@@ -151,8 +151,13 @@ public class ChatServlet extends HttpServlet {
     if (cleanedMessageContent.contains("**")) {
         MarkdownProcessor mark_it = new MarkdownProcessor();
         parsedMessageContent = mark_it.markdown(cleanedMessageContent);
+        // Remove <p> and </p> that markdown processor adds to string
+        parsedMessageContent = new
+                StringBuilder(parsedMessageContent).delete(0,2).toString();
+        int i = parsedMessageContent.length() - 1;
+        parsedMessageContent = new
+                StringBuilder(parsedMessageContent).delete(i-3, i).toString();
     }
-
 
     Message message =
         new Message(
