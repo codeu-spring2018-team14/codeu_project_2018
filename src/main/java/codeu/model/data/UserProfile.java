@@ -13,7 +13,7 @@ public class UserProfile {
   private final Instant creation;
 
   /**
-   * Constructs a new UserInfo.
+   * Constructs a new UserProfile.
    *
    * @param id the ID of this User
    * @param aboutMe the aboutMe info of this User
