@@ -218,7 +218,7 @@ public class PersistentDataStore {
 	profileEntity.setProperty("uuid", profile.getId().toString());
 	profileEntity.setProperty("about_me", profile.getAboutMe().toString());
 	profileEntity.setProperty("sent_messages", profile.getSentMessages().toString());
-	profileEntity.setProperty("creation_time", profile.getCreationTime());
+	profileEntity.setProperty("creation_time", profile.getCreationTime().toString());
 	datastore.put(profileEntity);
   }
 }
