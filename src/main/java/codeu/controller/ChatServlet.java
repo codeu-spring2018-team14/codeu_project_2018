@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import org.markdownj.MarkdownProcessor;
 
 /** Servlet class responsible for the chat page. */
 public class ChatServlet extends HttpServlet {
@@ -143,12 +144,30 @@ public class ChatServlet extends HttpServlet {
     // this removes any HTML from the message content
     String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
 
+    /* use MarkdownProcessor to parse any markdown if the message
+     * contains markdown
+     */
+    MarkdownProcessor mark_it = new MarkdownProcessor();
+    String parsedMessageContent = mark_it.markdown(cleanedMessageContent);
+    /* Sample Markdown Processor demo:
+     * enter "**important** markdown `monospace` _italic_"
+     * returns "<p><strong>important</strong> markdown <code>monospace</code> <em>italic</em></p>\n"
+     * remove <p> to get "<strong>important</strong> markdown <code>monospace</code> <em>italic</em>"
+     */
+    // Remove <p> and </p>\n that markdown processor adds to string
+    int i = parsedMessageContent.length();
+    /* deleted 5th character from the end
+     */
+    parsedMessageContent = new
+            StringBuilder(parsedMessageContent).delete(i-5, i).toString();
+    parsedMessageContent = new
+            StringBuilder(parsedMessageContent).delete(0,3).toString();
     Message message =
         new Message(
             UUID.randomUUID(),
             conversation.getId(),
             user.getId(),
-            cleanedMessageContent,
+            parsedMessageContent,
             Instant.now());
 
     messageStore.addMessage(message);
@@ -157,3 +176,4 @@ public class ChatServlet extends HttpServlet {
     response.sendRedirect("/chat/" + conversationTitle);
   }
 }
+
