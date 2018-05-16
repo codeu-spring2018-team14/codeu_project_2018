@@ -16,7 +16,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CodeU Team 14 Chat App</title>
+  <title>Profile</title>
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
@@ -36,22 +36,10 @@
   </nav>
 
   <div id="container">
-    <div
-      style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
-
-      <h1>CodeU Team 14 Chat App</h1>
-      <h2>Welcome!</h2>
-
-      <ul>
-        <li><a href="/login">Login</a> to get started.</li>
-        <li>Go to the <a href="/conversations">conversations</a> page to
-            create or join a conversation.</li>
-        <li>View the <a href="/about.jsp">about</a> page to learn more about the
-            project and Team 14!</li>
-        <li>You can <a href="/testdata">load test data</a> to fill the site with
-            example data.</li>
-      </ul>
-    </div>
+    <h1>Profile</h1>
+    <p>This will display user's profile information</p>
+    <form action="/profile" method="POST">
+      <button type="submit">Edit Profile</button>
   </div>
 </body>
 </html>
