@@ -15,16 +15,20 @@
 package codeu.model.data;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 /** Class representing a message. Messages are sent by a User in a Conversation. */
 public class Message {
+
+  // potentially give each message a list of messages of responses
 
   private final UUID id;
   private final UUID conversation;
   private final UUID author;
   private final String content;
   private final Instant creation;
+  private List<Message> replies;
 
   /**
    * Constructs a new Message.
@@ -66,5 +70,11 @@ public class Message {
   /** Returns the creation time of this Message. */
   public Instant getCreationTime() {
     return creation;
+  }
+
+  public List<Message> getReplies() { return replies; }
+
+  public void addReply(Message reply) {
+        replies.add(reply);
   }
 }
