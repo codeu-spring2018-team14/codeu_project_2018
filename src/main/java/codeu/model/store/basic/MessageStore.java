@@ -102,6 +102,18 @@ public class MessageStore {
     return messagesInConversation;
   }
 
+  public List<Message> getUserMessages(UUID userID){
+
+    List<Message> userMessages = new ArrayList<>();
+
+    for (Message message : messages) {
+    if (message.getAuthorId().equals(userID)) {
+      userMessages.add(message);
+    }
+  }
+  return userMessages;
+}
+
   /** Sets the List of Messages stored by this MessageStore. */
   public void setMessages(List<Message> messages) {
     this.messages = messages;

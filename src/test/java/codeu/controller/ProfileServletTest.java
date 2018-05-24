@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import codeu.model.data.User;
+import codeu.model.data.Profile;
 import codeu.model.store.basic.UserStore;
+import codeu.model.store.basic.ProfileStore;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +42,22 @@ public class ProfileServletTest {
 
   @Test
   public void testDoGet() throws IOException, ServletException{
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/user/test_user");
+    Profile mockProfile = Mockito.mock(Profile.class);
+    Mockito.when(mockProfile.getName()).thenReturn("test_username");
+    Mockito.when(mockProfile.getBio()).thenReturn("test bio");
+
+    Mockito.when(mockRequest.getParameter("profileUrl")).thenReturn("/user/test_user");
+    Mockito.when(mockRequest.getParameter("userUrl")).thenReturn("test_user");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test user");
+
+    ProfileStore mockProfileStore = Mockito.mock(ProfileStore.class);
+    Mockito.when(mockProfileStore.getProfile("test_username")).thenReturn(mockProfile);
+
+    profileServlet.setProfileStore(mockProfileStore);
+    HttpSession mockSession = Mockito.mock(HttpSession.class);
+    Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
+
     profileServlet.doGet(mockRequest,mockResponse);
 
     Mockito.verify(mockRequestDispatcher).forward(mockRequest,mockResponse);
