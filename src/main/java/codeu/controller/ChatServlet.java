@@ -130,6 +130,7 @@ public class ChatServlet extends HttpServlet {
     }
 
     String requestUrl = request.getRequestURI();
+
     String conversationTitle = requestUrl.substring("/chat/".length());
 
     Conversation conversation = conversationStore.getConversationWithTitle(conversationTitle);
@@ -139,41 +140,77 @@ public class ChatServlet extends HttpServlet {
       return;
     }
 
-    String messageContent = request.getParameter("message");
+    boolean isMessage = true;
+    if (request.getParameter("reply") != null) {
+      String replyContent = request.getParameter("reply");
+      isMessage = false;
 
-    // this removes any HTML from the message content
-    String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
+      // this removes any HTML from the message content
+      String cleanedReplyContent = Jsoup.clean(replyContent, Whitelist.none());
 
-    /* use MarkdownProcessor to parse any markdown if the message
-     * contains markdown
-     */
-    MarkdownProcessor mark_it = new MarkdownProcessor();
-    String parsedMessageContent = mark_it.markdown(cleanedMessageContent);
-    /* Sample Markdown Processor demo:
-     * enter "**important** markdown `monospace` _italic_"
-     * returns "<p><strong>important</strong> markdown <code>monospace</code> <em>italic</em></p>\n"
-     * remove <p> to get "<strong>important</strong> markdown <code>monospace</code> <em>italic</em>"
-     */
-    // Remove <p> and </p>\n that markdown processor adds to string
-    int i = parsedMessageContent.length();
-    /* deleted 5th character from the end
-     */
-    parsedMessageContent = new
-            StringBuilder(parsedMessageContent).delete(i-5, i).toString();
-    parsedMessageContent = new
-            StringBuilder(parsedMessageContent).delete(0,3).toString();
-    Message message =
-        new Message(
-            UUID.randomUUID(),
-            conversation.getId(),
-            user.getId(),
-            parsedMessageContent,
-            Instant.now());
+      MarkdownProcessor mark_it = new MarkdownProcessor();
+      String parsedReplyContent = mark_it.markdown(cleanedReplyContent);
+      int i = parsedReplyContent.length();
+      /* deleted 5th character from the end
+       */
+      parsedReplyContent = new
+              StringBuilder(parsedReplyContent).delete(i - 5, i).toString();
+      parsedReplyContent = new
+              StringBuilder(parsedReplyContent).delete(0, 3).toString();
+      // only 1 message is set true at one time
+      Message parentMessage = messageStore.getTrueMessage();
+      // reset message back to false
+      parentMessage.setReplyF();
+      Message reply =
+              new Message(
+                      UUID.randomUUID(),
+                      conversation.getId(),
+                      user.getId(),
+                      parsedReplyContent,
+                      Instant.now());
+      // add reply to list of replies for parent message
+      parentMessage.addReply(reply);
+      // redirect to a GET request
+      response.sendRedirect("/chat/" + conversationTitle);
+    }
 
-    messageStore.addMessage(message);
+    if (isMessage) {
+      String messageContent = request.getParameter("message");
 
-    // redirect to a GET request
-    response.sendRedirect("/chat/" + conversationTitle);
+      // this removes any HTML from the message content
+      String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
+
+      /* use MarkdownProcessor to parse any markdown if the message
+       * contains markdown
+       */
+      MarkdownProcessor mark_it = new MarkdownProcessor();
+      String parsedMessageContent = mark_it.markdown(cleanedMessageContent);
+      /* Sample Markdown Processor demo:
+       * enter "**important** markdown `monospace` _italic_"
+       * returns "<p><strong>important</strong> markdown <code>monospace</code> <em>italic</em></p>\n"
+       * remove <p> to get "<strong>important</strong> markdown <code>monospace</code> <em>italic</em>"
+       */
+      // Remove <p> and </p>\n that markdown processor adds to string
+      int i = parsedMessageContent.length();
+      /* deleted 5th character from the end
+       */
+      parsedMessageContent = new
+              StringBuilder(parsedMessageContent).delete(i - 5, i).toString();
+      parsedMessageContent = new
+              StringBuilder(parsedMessageContent).delete(0, 3).toString();
+      Message message =
+              new Message(
+                      UUID.randomUUID(),
+                      conversation.getId(),
+                      user.getId(),
+                      parsedMessageContent,
+                      Instant.now());
+
+      messageStore.addMessage(message);
+
+      // redirect to a GET request
+      response.sendRedirect("/chat/" + conversationTitle);
+    }
   }
 }
 
