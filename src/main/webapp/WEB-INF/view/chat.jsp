@@ -78,6 +78,8 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       <%
         if (!replies.isEmpty()) {
           for (Message reply : replies) {
+            String replier = UserStore.getInstance()
+              .getUser(reply.getAuthorId()).getName();
       %>
         <li><strong><%= replier %>:</strong> <%= reply.getContent() %></li>
       <%
