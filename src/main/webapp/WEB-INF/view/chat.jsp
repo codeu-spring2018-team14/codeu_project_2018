@@ -73,35 +73,31 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
           .getUser(message.getAuthorId()).getName();
         List<Message> replies = message.getReplies();
     %>
-       <li><strong><%= author %>:</strong> <%= message.getContent() %></li>
-          <ul>
+      <li><strong><%= author %>:</strong> <%= message.getContent() %></li>
+        <ul>
       <%
-        if(!replies.isEmpty()) {
+        if (!replies.isEmpty()) {
           for (Message reply : replies) {
-            String replier = UserStore.getInstance()
-              .getUser(reply.getAuthorId()).getName();
       %>
-            <li><strong><%= replier %>:</strong> <%= reply.getContent() %></li>
-          </ul>
+        <li><strong><%= replier %>:</strong> <%= reply.getContent() %></li>
       <%
           }
         }
       %>
+        </ul>
 
-          <hr/>
+      <hr/>
+      <% if (request.getSession().getAttribute("user") != null) { %>
+      <form action="/chat/<%= conversation.getTitle() %>" method="POST">
+          <input type="text" name="reply">
+          <br/>
+          <button type="submit">Reply</button>
+      </form>
+      <% } else { %>
+        <p><a href="/login">Login</a> to send a message.</p>
+      <% } %>
+      <hr/>
 
-          <% if (request.getSession().getAttribute("user") != null) {
-               message.setReplyT(); %>
-          <form action="/chat/<%= conversation.getTitle() %>" method="POST">
-              <input type="text" name="reply">
-              <br/>
-              <button type="submit">Reply</button>
-          </form>
-          <% } else { %>
-            <p><a href="/login">Login</a> to send a message.</p>
-          <% } %>
-
-          <hr/>
     <%
       }
     %>
