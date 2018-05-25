@@ -103,9 +103,9 @@ public class MessageStore {
     return messagesInConversation;
   }
 
-  public Message getTrueMessage() {
+  public Message getMessage(String Id) {
     for (Message message : messages) {
-      if (message.getIsReply()) {
+      if (message.getId().toString().equals(Id)) {
         return message;
       }
     }
