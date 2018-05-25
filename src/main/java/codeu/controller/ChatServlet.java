@@ -143,6 +143,7 @@ public class ChatServlet extends HttpServlet {
     boolean isMessage = true;
     if (request.getParameter("reply") != null) {
       String replyContent = request.getParameter("reply");
+      String parentId = request.getParameter("messageParent");
       isMessage = false;
 
       // this removes any HTML from the message content
@@ -157,10 +158,7 @@ public class ChatServlet extends HttpServlet {
               StringBuilder(parsedReplyContent).delete(i - 5, i).toString();
       parsedReplyContent = new
               StringBuilder(parsedReplyContent).delete(0, 3).toString();
-      // only 1 message is set true at one time
-      Message parentMessage = messageStore.getTrueMessage();
-      // reset message back to false
-      parentMessage.setReplyF();
+      Message parentMessage = messageStore.getMessage(parentId);
       Message reply =
               new Message(
                       UUID.randomUUID(),
@@ -168,7 +166,6 @@ public class ChatServlet extends HttpServlet {
                       user.getId(),
                       parsedReplyContent,
                       Instant.now());
-      // add reply to list of replies for parent message
       parentMessage.addReply(reply);
       // redirect to a GET request
       response.sendRedirect("/chat/" + conversationTitle);
