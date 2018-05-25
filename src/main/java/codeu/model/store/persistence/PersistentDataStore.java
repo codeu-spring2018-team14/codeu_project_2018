@@ -165,9 +165,8 @@ public class PersistentDataStore {
       try {
         UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
         String aboutMe = (String) entity.getProperty("about_me");
-		String sentMessages = (String) entity.getProperty("sent_messages");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-		UserProfile profile = new UserProfile(uuid, aboutMe, sentMessages, creationTime);
+		UserProfile profile = new UserProfile(uuid, aboutMe, creationTime);
         profiles.add(profile);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -217,7 +216,6 @@ public class PersistentDataStore {
   	Entity profileEntity = new Entity("chat-profiles");
 	profileEntity.setProperty("uuid", profile.getId().toString());
 	profileEntity.setProperty("about_me", profile.getAboutMe().toString());
-	profileEntity.setProperty("sent_messages", profile.getSentMessages().toString());
 	profileEntity.setProperty("creation_time", profile.getCreationTime().toString());
 	datastore.put(profileEntity);
   }

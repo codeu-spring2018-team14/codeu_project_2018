@@ -152,15 +152,13 @@ public class PersistentDataStoreTest {
   public void testSaveAndLoadUserProfiles() throws PersistentDataStoreException {
     UUID idOne = UUID.randomUUID();
     String aboutMeOne = "test_about_me_one";
-    String sentMessagesOne = "test_sent_messages_one";
     Instant creationOne = Instant.ofEpochMilli(1000);
-    UserProfile inputUserProfileOne = new UserProfile(idOne, aboutMeOne, sentMessagesOne, creationOne);
+    UserProfile inputUserProfileOne = new UserProfile(idOne, aboutMeOne, creationOne);
 
     UUID idTwo = UUID.randomUUID();
     String aboutMeTwo = "test_about_me_two";
-    String sentMessagesTwo = "test_sent_messages_two";
     Instant creationTwo = Instant.ofEpochMilli(2000);
-    UserProfile inputUserProfileTwo = new UserProfile(idTwo, aboutMeTwo, sentMessagesTwo, creationTwo);
+    UserProfile inputUserProfileTwo = new UserProfile(idTwo, aboutMeTwo, creationTwo);
 
     // save
     persistentDataStore.writeThrough(inputUserProfileOne);
@@ -173,13 +171,11 @@ public class PersistentDataStoreTest {
     UserProfile resultUserProfileOne = resultUserProfiles.get(0);
     Assert.assertEquals(idOne, resultUserProfileOne.getId());
     Assert.assertEquals(aboutMeOne, resultUserProfileOne.getAboutMe());
-    Assert.assertEquals(sentMessagesOne, resultUserProfileOne.getSentMessages());
     Assert.assertEquals(creationOne, resultUserProfileOne.getCreationTime());
 
     UserProfile resultUserProfileTwo = resultUserProfiles.get(1);
     Assert.assertEquals(idTwo, resultUserProfileTwo.getId());
     Assert.assertEquals(aboutMeTwo, resultUserProfileTwo.getAboutMe());
-    Assert.assertEquals(sentMessagesTwo, resultUserProfileTwo.getSentMessages());
     Assert.assertEquals(creationTwo, resultUserProfileTwo.getCreationTime());
   }
 }

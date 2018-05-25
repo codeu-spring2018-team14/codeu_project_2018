@@ -145,10 +145,9 @@ public class DefaultDataStore {
   private void addRandomUserProfiles() {
   	for(int i = 0; i < DEFAULT_USER_COUNT; i++) {
 	  User user = getRandomElement(users);
-	  String sentMessages = "Random_Message_Content_" + i;
 	  String aboutMe = "About_Me_Info_" + i;
 	  UserProfile profile = 
-		  new UserProfile(UUID.randomUUID(), aboutMe, sentMessages, Instant.now());
+		  new UserProfile(UUID.randomUUID(), aboutMe, Instant.now());
 	  PersistentStorageAgent.getInstance().writeThrough(profile);
 	  user_profiles.add(profile);
 	}

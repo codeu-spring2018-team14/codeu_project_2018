@@ -9,7 +9,6 @@ import java.util.UUID;
 public class UserProfile {
   private final UUID id;
   private final String aboutMe;
-  private final String sentMessages;
   private final Instant creation;
 
   /**
@@ -17,13 +16,11 @@ public class UserProfile {
    *
    * @param id the ID of this User
    * @param aboutMe the aboutMe info of this User
-   * @param sentMessages the past messages sent by this User
    * @param creation the creation time of this User
    */
-  public UserProfile(UUID id, String aboutMe, String sentMessages, Instant creation) {
+  public UserProfile(UUID id, String aboutMe, Instant creation) {
     this.id = id;
     this.aboutMe = aboutMe;
-	this.sentMessages = sentMessages;
     this.creation = creation;
   }
 
@@ -35,11 +32,6 @@ public class UserProfile {
   /** Returns the aboutMe info of this User. */
   public String getAboutMe() {
     return aboutMe;
-  }
-
-  /** Returns the sentMessages of this User. */
-  public String getSentMessages() {
-    return sentMessages;
   }
 
   /** Returns the creation time of this UserProfile. */
