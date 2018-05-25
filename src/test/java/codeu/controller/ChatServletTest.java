@@ -267,10 +267,12 @@ public class ChatServletTest {
     Mockito.when(mockRequest.getParameter("reply"))
             .thenReturn("**bold**");
 
+    Mockito.when(mockRequest.getParameter("messageParent")).thenReturn("test_UUID");
+
     Message fakeMessage =
             new Message(UUID.randomUUID(), fakeConversation.getId(), UUID.randomUUID(), "test_message",
                     Instant.now());
-    Mockito.when(mockMessageStore.getTrueMessage()).thenReturn(fakeMessage);
+    Mockito.when(mockMessageStore.getMessage("test_UUID")).thenReturn(fakeMessage);
 
     chatServlet.doPost(mockRequest, mockResponse);
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
