@@ -89,6 +89,8 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       <hr/>
       <% if (request.getSession().getAttribute("user") != null) { %>
       <form action="/chat/<%= conversation.getTitle() %>" method="POST">
+          <input type="text" name="messageParent" value="<%= message.getId().toString() %>">
+          <br/>
           <input type="text" name="reply">
           <br/>
           <button type="submit">Reply</button>
