@@ -8,7 +8,7 @@ import java.util.UUID;
 /** Class representing a User's Profile info. It is shown on a User's Profile Page */
 public class UserProfile {
   private final UUID id;
-  private final String aboutMe;
+  private String aboutMe;
   private final Instant creation;
 
   /**
@@ -37,5 +37,10 @@ public class UserProfile {
   /** Returns the creation time of this UserProfile. */
   public Instant getCreationTime() {
     return creation;
+  }
+
+  /** Sets the AboutMe info of this User. */
+  public void setAboutMe(String aboutMe){
+  	  this.aboutMe = aboutMe;
   }
 }
