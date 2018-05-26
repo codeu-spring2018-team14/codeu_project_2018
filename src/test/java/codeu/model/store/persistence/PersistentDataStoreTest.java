@@ -3,6 +3,7 @@ package codeu.model.store.persistence;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.data.UserProfile;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import java.time.Instant;
@@ -145,5 +146,36 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(authorTwo, resultMessageTwo.getAuthorId());
     Assert.assertEquals(contentTwo, resultMessageTwo.getContent());
     Assert.assertEquals(creationTwo, resultMessageTwo.getCreationTime());
+  }
+
+   @Test
+  public void testSaveAndLoadUserProfiles() throws PersistentDataStoreException {
+    UUID idOne = UUID.randomUUID();
+    String aboutMeOne = "test_about_me_one";
+    Instant creationOne = Instant.ofEpochMilli(1000);
+    UserProfile inputUserProfileOne = new UserProfile(idOne, aboutMeOne, creationOne);
+
+    UUID idTwo = UUID.randomUUID();
+    String aboutMeTwo = "test_about_me_two";
+    Instant creationTwo = Instant.ofEpochMilli(2000);
+    UserProfile inputUserProfileTwo = new UserProfile(idTwo, aboutMeTwo, creationTwo);
+
+    // save
+    persistentDataStore.writeThrough(inputUserProfileOne);
+    persistentDataStore.writeThrough(inputUserProfileTwo);
+
+    // load
+    List<UserProfile> resultUserProfiles = persistentDataStore.loadUserProfiles();
+
+    // confirm that what we saved matches what we loaded
+    UserProfile resultUserProfileOne = resultUserProfiles.get(0);
+    Assert.assertEquals(idOne, resultUserProfileOne.getId());
+    Assert.assertEquals(aboutMeOne, resultUserProfileOne.getAboutMe());
+    Assert.assertEquals(creationOne, resultUserProfileOne.getCreationTime());
+
+    UserProfile resultUserProfileTwo = resultUserProfiles.get(1);
+    Assert.assertEquals(idTwo, resultUserProfileTwo.getId());
+    Assert.assertEquals(aboutMeTwo, resultUserProfileTwo.getAboutMe());
+    Assert.assertEquals(creationTwo, resultUserProfileTwo.getCreationTime());
   }
 }

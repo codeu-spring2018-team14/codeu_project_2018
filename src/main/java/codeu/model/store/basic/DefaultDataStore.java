@@ -17,6 +17,7 @@ package codeu.model.store.basic;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.data.UserProfile;
 import codeu.model.store.persistence.PersistentStorageAgent;
 
 import java.time.Instant;
@@ -64,17 +65,20 @@ public class DefaultDataStore {
   private List<User> users;
   private List<Conversation> conversations;
   private List<Message> messages;
+  private List<UserProfile> user_profiles;
 
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private DefaultDataStore() {
     users = new ArrayList<>();
     conversations = new ArrayList<>();
     messages = new ArrayList<>();
+	user_profiles = new ArrayList<>();
 
     if (USE_DEFAULT_DATA) {
       addRandomUsers();
       addRandomConversations();
       addRandomMessages();
+	  addRandomUserProfiles();
     }
   }
 
@@ -92,6 +96,10 @@ public class DefaultDataStore {
 
   public List<Message> getAllMessages() {
     return messages;
+  }
+
+  public List<UserProfile> getAllUserProfiles(){
+  	  return user_profiles;
   }
 
   private void addRandomUsers() {
@@ -132,6 +140,17 @@ public class DefaultDataStore {
       PersistentStorageAgent.getInstance().writeThrough(message);
       messages.add(message);
     }
+  }
+
+  private void addRandomUserProfiles() {
+  	for(int i = 0; i < DEFAULT_USER_COUNT; i++) {
+	  User user = getRandomElement(users);
+	  String aboutMe = "About_Me_Info_" + i;
+	  UserProfile profile = 
+		  new UserProfile(UUID.randomUUID(), aboutMe, Instant.now());
+	  PersistentStorageAgent.getInstance().writeThrough(profile);
+	  user_profiles.add(profile);
+	}
   }
 
   private <E> E getRandomElement(List<E> list) {
