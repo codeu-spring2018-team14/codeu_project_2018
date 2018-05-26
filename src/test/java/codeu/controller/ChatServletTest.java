@@ -250,4 +250,31 @@ public class ChatServletTest {
 
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
   }
+
+  @Test
+  public void testDoPost_ReplyMarkdown() throws IOException, ServletException {
+    Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
+    Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
+
+    User fakeUser = new User(UUID.randomUUID(), "test_username", "test_password", Instant.now());
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
+
+    Conversation fakeConversation =
+            new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+    Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
+            .thenReturn(fakeConversation);
+
+    Mockito.when(mockRequest.getParameter("reply"))
+            .thenReturn("**bold**");
+
+    Mockito.when(mockRequest.getParameter("messageParent")).thenReturn("test_UUID");
+
+    Message fakeMessage =
+            new Message(UUID.randomUUID(), fakeConversation.getId(), UUID.randomUUID(), "test_message",
+                    Instant.now());
+    Mockito.when(mockMessageStore.getMessage("test_UUID")).thenReturn(fakeMessage);
+
+    chatServlet.doPost(mockRequest, mockResponse);
+    Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
+  }
 }
