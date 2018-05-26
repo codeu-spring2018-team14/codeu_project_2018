@@ -13,18 +13,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
-<%@ page import="java.util.List"%>
-<%@ page import="codeu.model.data.User"%>
-<%@ page import="codeu.model.data.Profile"%>
-<%@ page import="codeu.model.data.Message"%>
-<%@ page import="codeu.model.store.basic.ProfileStore"%>
-<%@ page import="codeu.model.store.basic.ConversationStore"%>
-<%@ page import="java.util.UUID"%>
-
-<%
-  User user = (User) request.getAttribute("profileUser");
-  Profile profile = (Profile) request.getAttribute("profile");
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,52 +35,11 @@
     <a href="/testdata">Load Test Data</a>
   </nav>
 
-
-  <script language="javascript">
-      function showEdit() {
-          editProfile.style.display="block";
-      }
-  </script>
-
   <div id="container">
-    <div
-    <h1><% request.getAttribute("username")%></h1>
-    <h3>About</h3>
-    <% if (request.getAttribute("username").equals(request.getSession().getAttribute("user"))){%>
-        <form action="/user/<%= request.getAttribute("user")%>" method="POST">
-        About:<textarea rows="7" cols="70" name= "newAbout" id="newAbout"></textarea>
-        <input type="submit" name = "update" value = "Update"</>
-      </form>
-      <% }else{ %>
-            <p>
-              <%= (String) request.getAttribute("bio")%>
-            </p>
-        <%}%>
-    <h3>Messages</h3>
-
-    <%
-    List<Message> messages = (List<Message>) request.getAttribute("messages");
-    if (messages == null || messages.isEmpty()){
-    %>
-      <h2 style="color:red">No messages.</h2>
-      <%
-    }else{
-    %>
-      <ul class="mdl=list">
-    <%
-      for(Message message:messages){
-        %>
-          <li><a href="/chat/<%= ConversationStore.getInstance().getConversation(message.getConversationId()).getTitle()%>">
-            <%= ConversationStore.getInstance().getConversation(message.getConversationId()).getTitle() %></a>:
-            <%= message.getContent() %></a></li>
-        <%
-          }
-        %>
-          </ul>
-        <%
-        }
-        %>
-    </div>
+    <h1>Profile</h1>
+    <p>This will display user's profile information</p>
+    <form action="/profile" method="POST">
+      <button type="submit">Edit Profile</button>
   </div>
 </body>
 </html>

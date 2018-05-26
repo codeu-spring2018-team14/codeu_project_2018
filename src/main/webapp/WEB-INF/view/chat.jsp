@@ -47,15 +47,17 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 <body onload="scrollChat()">
 
   <nav>
-    <a id="navTitle" href="/">CodeU Chat App</a>
+    <a id="navTitle" href="/">CodeU Team 14 Chat App</a>
     <a href="/conversations">Conversations</a>
-      <% if (request.getSession().getAttribute("user") != null) { %>
-    <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
-    <% } else { %>
+    <% if(request.getSession().getAttribute("user") != null){ %>
+      <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
+      <a href="/profile">Profile</a>
+    <% } else{ %>
       <a href="/login">Login</a>
       <a href="/register">Register</a>
     <% } %>
     <a href="/about.jsp">About</a>
+    <a href="/testdata">Load Test Data</a>
   </nav>
 
   <div id="container">
@@ -71,8 +73,37 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       for (Message message : messages) {
         String author = UserStore.getInstance()
           .getUser(message.getAuthorId()).getName();
+        List<Message> replies = message.getReplies();
     %>
       <li><strong><%= author %>:</strong> <%= message.getContent() %></li>
+        <ul>
+      <%
+        if (!replies.isEmpty()) {
+          for (Message reply : replies) {
+            String replier = UserStore.getInstance()
+              .getUser(reply.getAuthorId()).getName();
+      %>
+        <li><strong><%= replier %>:</strong> <%= reply.getContent() %></li>
+      <%
+          }
+        }
+      %>
+        </ul>
+
+      <hr/>
+      <% if (request.getSession().getAttribute("user") != null) { %>
+      <form action="/chat/<%= conversation.getTitle() %>" method="POST">
+          <input type="text" name="messageParent" value="<%= message.getId().toString() %>">
+          <br/>
+          <input type="text" name="reply">
+          <br/>
+          <button type="submit">Reply</button>
+      </form>
+      <% } else { %>
+        <p><a href="/login">Login</a> to send a message.</p>
+      <% } %>
+      <hr/>
+
     <%
       }
     %>

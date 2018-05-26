@@ -17,7 +17,6 @@ package codeu.model.store.basic;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
-import codeu.model.data.Profile;
 import codeu.model.store.persistence.PersistentStorageAgent;
 
 import java.time.Instant;
@@ -50,8 +49,6 @@ public class DefaultDataStore {
    */
   private int DEFAULT_CONVERSATION_COUNT = 10;
 
-  private int DEFAULT_PROFILE_COUNT = 20;
-
   /**
    * Default message count. Only used if USE_DEFAULT_DATA is true. Each message is assigned a random
    * author and conversation.
@@ -67,20 +64,17 @@ public class DefaultDataStore {
   private List<User> users;
   private List<Conversation> conversations;
   private List<Message> messages;
-  private List<Profile> profiles;
 
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private DefaultDataStore() {
     users = new ArrayList<>();
     conversations = new ArrayList<>();
     messages = new ArrayList<>();
-    profiles = new ArrayList<>();
 
     if (USE_DEFAULT_DATA) {
       addRandomUsers();
       addRandomConversations();
       addRandomMessages();
-      addRandomProfiles();
     }
   }
 
@@ -98,10 +92,6 @@ public class DefaultDataStore {
 
   public List<Message> getAllMessages() {
     return messages;
-  }
-
-  public List<Profile> getAllProfiles(){
-    return profiles;
   }
 
   private void addRandomUsers() {
@@ -141,20 +131,6 @@ public class DefaultDataStore {
               UUID.randomUUID(), conversation.getId(), author.getId(), content, Instant.now());
       PersistentStorageAgent.getInstance().writeThrough(message);
       messages.add(message);
-    }
-  }
-
-  private void addRandomProfiles() {
-    String bio = getRandomMessageContent();
-    for (int i=0; i < DEFAULT_PROFILE_COUNT; i++) {
-      List<Message> messages = new ArrayList<>();
-      int nMessages = (int) Math.random() * 100 + 1;
-      User user = getRandomElement(users);
-      List<Message> userMessages = new ArrayList<>();
-      addRandomMessages();
-      Profile profile = new Profile(user.getId(), Instant.now(), bio, messages);
-      PersistentStorageAgent.getInstance().writeThrough(profile);
-      profiles.add(profile);
     }
   }
 

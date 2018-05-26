@@ -22,7 +22,7 @@
 <body>
 
   <nav>
-    <a id="navTitle" href="/">CodeU Chat App</a>
+    <a id="navTitle" href="/">CodeU Team 14 Chat App</a>
     <a href="/conversations">Conversations</a>
     <% if(request.getSession().getAttribute("user") != null){ %>
       <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
@@ -59,11 +59,11 @@
       </ul>
 
       <p>
-        This chat web app is a product of the joint effort of 4 college 
+        This chat web app is a product of the joint effort of 4 college
 	 students: Ed Ellis, Emily Padgett, Cece Xiao, and Alonda Robichaud.
-	 Ed is a sophomore at Columbia University interested in jazz 
-	 and anime. 
-	 Emily is a sophomore at Penn State who loves traveling and 
+	 Ed is a sophomore at Columbia University interested in jazz
+	 and anime.
+	 Emily is a sophomore at Penn State who loves traveling and
 	 trying new foods. She also loves dogs, especially her own dog.
 	 Cece is a sophomore at Brown University who loves to dance,
 	 binge watch TV shows. She is a major foodie and likes to look

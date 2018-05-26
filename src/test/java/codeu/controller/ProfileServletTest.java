@@ -52,7 +52,7 @@ public class ProfileServletTest {
     Mockito.when(mockSession.getAttribute("user")).thenReturn("test user");
 
     ProfileStore mockProfileStore = Mockito.mock(ProfileStore.class);
-    Mockito.when(mockProfileStore.getProfile("test_username")).thenReturn(mockProfile);
+    Mockito.when(mockProfileStore.getProfile("test user")).thenReturn(mockProfile);
 
     profileServlet.setProfileStore(mockProfileStore);
     HttpSession mockSession = Mockito.mock(HttpSession.class);
@@ -62,4 +62,18 @@ public class ProfileServletTest {
 
     Mockito.verify(mockRequestDispatcher).forward(mockRequest,mockResponse);
   }
+
+    @Test
+    public void toDoPost_null() throws IOException, ServletException {
+      Mockito.when(mockRequest.getParameter("user")).thenReturn("test_user");
+      Mockito.when(mockRequest.getParameter("username")).thenReturn("test_username");
+      Mockito.when(mockRequest.getParameter("editBio")).thenReturn("test bio");
+
+      UserStore mockUserStore = Mockito.mock(UserStore.class);
+      ProfileStore mockProfileStore = Mockito.mock(ProfileStore.class);
+      Mockito.when(mockProfileStore.doesProfileExist("test_username")).thenReturn(false);
+      profileServlet.setProfileStore(mockProfileStore);
+      profileServlet.doPost(mockRequest, mockResponse);
+      Mockito.verify(mockResponse).sendRedirect("/user/test_username");
+    }
 }
